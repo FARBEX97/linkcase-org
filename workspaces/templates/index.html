@@ -39,13 +39,12 @@
         </p>
         <p>{{ link_form.submit() }}</p>
     </form>
-    <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
     <h1>Hi, {{ current_user.username }}!</h1>
     {% for workspace in workspaces %}
     <div id="workspace">{{ workspace.name }}</div>
     <div id="links">
-        <ul>
         {{workspace.links}}
+        <ul>
         {% for link in workspace.links %}
             <li><a href="{{ link.url }}">{{ link.name }}</a></li>
         {% endfor %}

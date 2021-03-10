@@ -9,21 +9,23 @@ from .forms import LoginForm, RegistrationForm, NewWorkspaceForm, NewLinkForm
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    workspaces = Workspace.query.filter_by(user_id=current_user.id)
+    workspaces = Workspace.query.filter_by(user_id=current_user.id).all()
     workspace_names = [workspace.name for workspace in workspaces]
     links_urls = [workspace.links for workspace in workspaces]
     ws_form = NewWorkspaceForm()
     link_form = NewLinkForm()
     link_form.workspace.choices = workspace_names
-    if ws_form.validate_on_submit():
+    if ws_form.workspace.data and ws_form.validate():
+        print('creando workspace')
         workspace = Workspace(name=ws_form.name.data, user_id=current_user.id)
         db.session.add(workspace)
         db.session.commit()
         flash('Workspace created successfully!')
         return redirect(url_for('index'))
 
-    if ws_form.validate_on_submit():
-        link = Link(name=link_form.name.data, url=link_form.url.data, workspace_id=link_form.workspace.data)
+    elif link_form.link.data and link_form.validate():
+        print('creando link')
+        link = Link(name=link_form.link_name.data, url=link_form.url.data, workspace_id=link_form.workspace.data)
         db.session.add(link)
         db.session.commit()
         flash('Link added successfully!')
