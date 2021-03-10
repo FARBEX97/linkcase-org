@@ -15,21 +15,23 @@ def index():
     ws_form = NewWorkspaceForm()
     link_form = NewLinkForm()
     link_form.workspace.choices = workspace_names
-    if ws_form.workspace.data and ws_form.validate():
-        print('creando workspace')
-        workspace = Workspace(name=ws_form.name.data, user_id=current_user.id)
-        db.session.add(workspace)
-        db.session.commit()
-        flash('Workspace created successfully!')
-        return redirect(url_for('index'))
+    if request.method == 'POST':
+        if ws_form.ws_name.data and ws_form.validate():
+            print('creando workspace')
+            workspace = Workspace(name=ws_form.ws_name.data, user_id=current_user.id)
+            db.session.add(workspace)
+            db.session.commit()
+            flash('Workspace created successfully!')
+            return redirect(url_for('index'))
 
-    elif link_form.link.data and link_form.validate():
-        print('creando link')
-        link = Link(name=link_form.link_name.data, url=link_form.url.data, workspace_id=link_form.workspace.data)
-        db.session.add(link)
-        db.session.commit()
-        flash('Link added successfully!')
-        return redirect(url_for('index'))
+        elif link_form.validate():
+            print('creando link')
+            workspace_id = Workspace.query.filter_by(name=link_form.workspace.data, user_id=current_user.id).first().id
+            link = Link(name=link_form.name.data, url=link_form.url.data, workspace_id=workspace_id)
+            db.session.add(link)
+            db.session.commit()
+            flash('Link added successfully!')
+            return redirect(url_for('index'))
 
     return render_template('index.html', title='Index', workspaces=workspaces, ws_form=ws_form, link_form=link_form)
 

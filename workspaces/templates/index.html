@@ -5,9 +5,9 @@
     <form action="" method="post" novalidate>
         {{ ws_form.hidden_tag() }}
         <p>
-            {{ ws_form.name.label }}<br>
-            {{ ws_form.name(size=32) }}<br>
-            {% for error in ws_form.name.errors %}
+            {{ ws_form.ws_name.label }}<br>
+            {{ ws_form.ws_name(size=32) }}<br>
+            {% for error in ws_form.ws_name.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
@@ -43,7 +43,6 @@
     {% for workspace in workspaces %}
     <div id="workspace">{{ workspace.name }}</div>
     <div id="links">
-        {{workspace.links}}
         <ul>
         {% for link in workspace.links %}
             <li><a href="{{ link.url }}">{{ link.name }}</a></li>

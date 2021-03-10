@@ -31,12 +31,12 @@ class RegistrationForm(FlaskForm):
 
 
 class NewWorkspaceForm(FlaskForm):
-    name = StringField('Workspace', validators=[DataRequired()])
-    submit = SubmitField('workspace')
+    ws_name = StringField('Workspace', validators=[DataRequired()])
+    submit = SubmitField('Create')
 
 
 class NewLinkForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     url = StringField('Url', validators=[DataRequired()])
     workspace = SelectField('Workspace', coerce=str, validators=[DataRequired()])
-    submit = SubmitField('link')
+    submit = SubmitField('Add Link')
