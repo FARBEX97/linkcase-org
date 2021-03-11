@@ -2,14 +2,15 @@ from . import app, db
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
-from .models import user, workspace, link
+from .models import User, Workspace, Link
 from .forms import LoginForm, RegistrationForm, NewWorkspaceForm, NewLinkForm, DeleteWorkspaceForm
+from . import db_query as dbq
 
 
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    workspaces = workspace.get_all_workspaces(current_user)
+    workspaces = dbq.get_all_workspaces(current_user)
     links_urls = [workspace.links for workspace in workspaces]
     ws_form = NewWorkspaceForm()
     link_form = NewLinkForm()
@@ -18,17 +19,17 @@ def index():
     link_form.workspace.choices = workspace_names
     if request.method == 'POST':
         if ws_form.ws_name.data and ws_form.validate():
-            workspace.create_workspace(name=ws_form.ws_name.data, user=current_user)
+            dbq.create_workspace(name=ws_form.ws_name.data, user=current_user)
             flash('Workspace created successfully!')
             return redirect(url_for('index'))
 
         elif link_form.validate():
-            link.create_link(workspace_name=link_form.workspace.data, user=current_user, link_url=link_form.url.data, link_name=link_form.name.data)
+            dbq.create_link(workspace_name=link_form.workspace.data, user=current_user, link_url=link_form.url.data, link_name=link_form.name.data)
             flash('Link added successfully!')
             return redirect(url_for('index'))
 
         elif request.form.get("delete_ws"):
-            workspace.delete_workspace(name=request.form['delete_ws'],user=current_user)
+            dbq.delete_workspace(name=request.form['delete_ws'],user=current_user)
             flash('Workspace deleted successfully!')
             return redirect(url_for('index'))
 
@@ -37,7 +38,7 @@ def index():
                 form_values = form_value.split('::')
                 return form_values[0], form_values[1]
             link_name, workspace_name = get_linkname_and_workspacename_from_form(request.form['delete_link'])
-            link.delete_link(link_name=link_name, parent_workspace_name=workspace_name, user=current_user)
+            dbq.delete_link(link_name=link_name, parent_workspace_name=workspace_name, user=current_user)
             flash('Link deleted successfully!')
             return redirect(url_for('index'))
 

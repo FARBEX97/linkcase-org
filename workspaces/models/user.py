@@ -20,26 +20,6 @@ class User(UserMixin,db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-class Workspace(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    links = db.relationship('Link', cascade='all, delete-orphan', lazy='dynamic')
-
-    def __repr__(self):
-        return f'<Workspace {self.name}>'
-
-
-class Link(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
-    url = db.Column(db.String(64), index=True)
-    workspace_id = db.Column(db.Integer, db.ForeignKey('workspace.id'))
-    
-    def __repr__(self):
-        return f'<Link {self.name}>'
-
-
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))

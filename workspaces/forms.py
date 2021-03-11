@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-from flask_login import current_user
-from .models import User, Workspace
+from .models.user import User
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -40,3 +39,7 @@ class NewLinkForm(FlaskForm):
     url = StringField('Url', validators=[DataRequired()])
     workspace = SelectField('Workspace', coerce=str, validators=[DataRequired()])
     submit = SubmitField('Add Link')
+
+
+class DeleteWorkspaceForm(FlaskForm):
+    delete = SubmitField('Delete')

@@ -41,11 +41,11 @@
     </form>
     <h1>Hi, {{ current_user.username }}!</h1>
     {% for workspace in workspaces %}
-    <div id="workspace">{{ workspace.name }}</div>
+    <div id="workspace">{{ workspace.name }} | <form method ="post" action="/"><button type="submit" name="delete_ws" value="{{workspace.name}}">Delete</button></form></div>
     <div id="links">
         <ul>
         {% for link in workspace.links %}
-            <li><a href="{{ link.url }}">{{ link.name }}</a></li>
+            <li><a href="{{ link.url }}">{{ link.name }}</a> | </li><form method ="post" action="/"><button type="submit" name="delete_link" value="{{link.name}}::{{workspace.name}}">Delete</button></form>
         {% endfor %}
         </ul>
     </div>
