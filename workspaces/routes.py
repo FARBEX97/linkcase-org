@@ -3,7 +3,9 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from .models import user, workspace, link
-from .forms import LoginForm, RegistrationForm, NewWorkspaceForm, NewLinkForm, DeleteWorkspaceForm
+from .forms.user import LoginForm, RegistrationForm
+from .forms.link import NewLinkForm
+from .forms.workspace import NewWorkspaceForm, DeleteWorkspaceForm
 
 
 @app.route('/', methods=['GET', 'POST'])
