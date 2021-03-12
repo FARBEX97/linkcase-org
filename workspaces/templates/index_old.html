@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Create a new workspace</h1>
+    <form action="" method="post" novalidate>
+        {{ ws_form.hidden_tag() }}
+        <p>
+            {{ ws_form.ws_name.label }}<br>
+            {{ ws_form.ws_name(size=32) }}<br>
+            {% for error in ws_form.ws_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ ws_form.submit() }}</p>
+    </form>
+    <h1>Add a new Link</h1>
+    <form action="" method="post" novalidate>
+        {{ link_form.hidden_tag() }}
+        <p>
+            {{ link_form.name.label }}<br>
+            {{ link_form.name(size=32) }}<br>
+            {% for error in link_form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ link_form.url.label }}<br>
+            {{ link_form.url(size=32) }}<br>
+            {% for error in link_form.url.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ link_form.workspace.label }}<br>
+            {{ link_form.workspace }}<br>
+            {% for error in link_form.workspace.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ link_form.submit() }}</p>
+    </form>
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% for workspace in workspaces %}
+    <div id="workspace">{{ workspace.name }} | <form method ="post" action="/"><button type="submit" name="delete_ws" value="{{workspace.name}}">Delete</button></form></div>
+    <div id="links">
+        <ul>
+        {% for link in workspace.links %}
+            <li><a href="{{ link.url }}">{{ link.name }}</a> | </li><form method ="post" action="/"><button type="submit" name="delete_link" value="{{link.name}}::{{workspace.name}}">Delete</button></form>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+{% endblock %}
