@@ -11,12 +11,12 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()], render_kw={'placeholder': 'Enter username'})
+    email = StringField('Email', validators=[DataRequired(), Email()], render_kw={'placeholder': 'Enter email'})
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={'placeholder': 'Enter password'})
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')], render_kw={'placeholder': 'Confirm password'})
+    submit = SubmitField('Create Account')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()

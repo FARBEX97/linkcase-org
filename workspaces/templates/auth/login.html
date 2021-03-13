@@ -15,8 +15,6 @@
                             {% for error in form.username.errors %}
                             <span style="color: red;">[{{ error }}]</span>
                             {% endfor %}
-                            <!-- <label class="small mb-1" for="inputEmailAddress">Email</label> -->
-                            <!-- <input class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" /> -->
                         </div>
                         <div class="form-group">
                             {{ form.password.label(class="small mb-1") }}<br>
@@ -24,20 +22,15 @@
                             {% for error in form.password.errors %}
                             <span style="color: red;">[{{ error }}]</span>
                             {% endfor %}
-                            <!-- <label class="small mb-1" for="inputPassword">Password</label>
-                            <input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" /> -->
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 {{ form.remember_me(class="custom-control-input") }} {{ form.remember_me.label(class="custom-control-label") }}
-                                <!-- <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
-                                <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label> -->
                             </div>
                         </div>
                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
                             <a class="small" href="password.html">Forgot Password?</a>
                             {{ form.submit(class="btn btn-primary") }}
-                            <!-- <a class="btn btn-primary" href="index.html">Login</a> -->
                         </div>
                     </form>
                 </div>
