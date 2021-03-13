@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block detail %}
+<div class="container-fluid">
+    <h1 class="mt-4">Workspace: {{ detailed_workspace.name }}</h1>
+    <form method ="post" action="/"><button type="submit" name="delete_ws" value="{{detailed_workspace.name}}" class="btn btn-danger my-3">Delete Workspace</button></form>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">workspaces / {{ detailed_workspace.name }}</li>
+    </ol>
+    <form action="" method="post" novalidate>
+        {{ link_form.hidden_tag() }}
+        <h3>New link:</h3>
+        <p>
+            {{ link_form.name.label }} {{ link_form.name }} {{ link_form.url.label }} {{ link_form.url }} {{ link_form.submit() }}<br>
+            {% for error in link_form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            {% for error in link_form.url.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+    </form>
+    <div class="row">
+        {% for link in detailed_workspace.links %}
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">{{ link.name }}</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="{{ link.url }}" target="_blank">Go to page</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

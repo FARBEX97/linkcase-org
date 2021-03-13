@@ -5,8 +5,8 @@ from wtforms.validators import DataRequired
 
 
 class NewWorkspaceForm(FlaskForm):
-    ws_name = StringField('Workspace', validators=[DataRequired()])
-    submit = SubmitField('Create')
+    ws_name = StringField('New Workspace', validators=[DataRequired()], render_kw={"placeholder": "New Workspace"})
+    submit = SubmitField('Create Workspace')
 
 
 class DeleteWorkspaceForm(FlaskForm):

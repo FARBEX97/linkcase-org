@@ -17,7 +17,6 @@ def index():
     link_form = NewLinkForm()
     del_ws_form = DeleteWorkspaceForm()
     workspace_names = [workspace.name for workspace in workspaces]
-    link_form.workspace.choices = workspace_names
     if request.method == 'POST':
         if ws_form.ws_name.data and ws_form.validate():
             workspace.create_workspace(name=ws_form.ws_name.data, user=current_user)
@@ -83,3 +82,41 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/workspace/<workspace_name>/detail', methods=['GET', 'POST'])
+def workspace_detail(workspace_name):
+    workspaces = workspace.get_all_workspaces(current_user)
+    links_urls = [workspace.links for workspace in workspaces]
+    ws_form = NewWorkspaceForm()
+    link_form = NewLinkForm()
+    del_ws_form = DeleteWorkspaceForm()
+    workspace_names = [workspace.name for workspace in workspaces]
+
+    detailed_workspace = [workspace for workspace in workspaces if workspace.name == workspace_name][0]
+    if request.method == 'POST':
+        if ws_form.ws_name.data and ws_form.validate():
+            workspace.create_workspace(name=ws_form.ws_name.data, user=current_user)
+            flash('Workspace created successfully!')
+            return redirect(url_for('index'))
+
+        elif link_form.validate():
+            link.create_link(workspace_name=detailed_workspace.name, user=current_user, link_url=link_form.url.data, link_name=link_form.name.data)
+            flash('Link added successfully!')
+            return redirect(url_for('index'))
+
+        elif request.form.get("delete_ws"):
+            workspace.delete_workspace(name=request.form['delete_ws'],user=current_user)
+            flash('Workspace deleted successfully!')
+            return redirect(url_for('index'))
+
+        elif request.form.get("delete_link"):
+            def get_linkname_and_workspacename_from_form(form_value):
+                form_values = form_value.split('::')
+                return form_values[0], form_values[1]
+            link_name, workspace_name = get_linkname_and_workspacename_from_form(request.form['delete_link'])
+            link.delete_link(link_name=link_name, parent_workspace_name=workspace_name, user=current_user)
+            flash('Link deleted successfully!')
+            return redirect(url_for('index'))
+
+    return render_template('ws_detail.html', workspaces=workspaces, ws_form=ws_form, link_form=link_form, del_ws_form=del_ws_form, detailed_workspace=detailed_workspace)

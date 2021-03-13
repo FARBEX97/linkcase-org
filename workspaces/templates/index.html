@@ -5,18 +5,20 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="index.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Dashboard
-                    </a>
                     <div class="sb-sidenav-menu-heading">Workspaces</div>
-                    <a class="nav-link" id="new_workspace_btn">
-                        <div class="sb-nav-link-icon"><i class="fas fa-plus-square"></i></div>
-                        New Workspace
-                    </a>
+                    <form action="" method="post" novalidate>
+                        {{ ws_form.hidden_tag() }}
+                        <p>
+                            <!-- {{ ws_form.ws_name.label }}<br> -->
+                            {{ ws_form.ws_name }}<br>
+                            {% for error in ws_form.ws_name.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </p>
+                        <p>{{ ws_form.submit() }}</p>
+                    </form>
                     {% for workspace in workspaces %}
-                    <a class="nav-link" href="charts.html">
+                    <a class="nav-link" href="{{ url_for('workspace_detail', workspace_name=workspace.name) }}">
                         <div class="sb-nav-link-icon"></div>
                         {{ workspace.name }}
                     </a>
@@ -31,42 +33,9 @@
     </div>
     <div id="layoutSidenav_content">
         <main>
-            <form action="" method="post" novalidate>
-                {{ ws_form.hidden_tag() }}
-                <p>
-                    {{ ws_form.ws_name.label }}<br>
-                    {{ ws_form.ws_name(size=32) }}<br>
-                    {% for error in ws_form.ws_name.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>{{ ws_form.submit() }}</p>
-            </form>
-            <form action="" method="post" novalidate>
-                {{ link_form.hidden_tag() }}
-                <p>
-                    {{ link_form.name.label }}<br>
-                    {{ link_form.name(size=32) }}<br>
-                    {% for error in link_form.name.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ link_form.url.label }}<br>
-                    {{ link_form.url(size=32) }}<br>
-                    {% for error in link_form.url.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ link_form.workspace.label }}<br>
-                    {{ link_form.workspace }}<br>
-                    {% for error in link_form.workspace.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>{{ link_form.submit() }}</p>
-            </form>
+            {% block detail %}
+            {% endblock %}
+
 <!--                     
             <div class="container-fluid">
                 <h1 class="mt-4">Dashboard</h1>
