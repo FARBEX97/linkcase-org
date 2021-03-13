@@ -3,30 +3,58 @@
 {% block detail %}
 <div class="container-fluid">
     <h1 class="mt-4">Workspace: {{ detailed_workspace.name }}</h1>
-    <form method ="post" action="/"><button type="submit" name="delete_ws" value="{{detailed_workspace.name}}" class="btn btn-danger my-3">Delete Workspace</button></form>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">workspaces / {{ detailed_workspace.name }}</li>
+    <div class="row">
+        <div class="col-sm-2 my-1">
+            <form method ="post" action="/"><button type="submit" name="delete_ws" value="{{detailed_workspace.name}}" class="btn btn-danger">Delete Workspace</button></form>
+        </div>
+        <div class="col-sm-2 my-1">
+            <a class="btn btn-success" href="#new_link_form" id="new_link_show_btn">Add Link</a>
+            <a class="btn btn-warning" href="#new_link_form" id="new_link_hide_btn" style="display: none;">Hide form</a>
+        </div>
+
+    </div>
+    <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active"><a href="{{ url_for('index') }}">Dashboard</a>/{{ detailed_workspace.name }}</li>
     </ol>
-    <form action="" method="post" novalidate>
+    <form action="" method="post" novalidate id="new_link_form" style="display: none;">
         {{ link_form.hidden_tag() }}
         <h3>New link:</h3>
-        <p>
-            {{ link_form.name.label }} {{ link_form.name }} {{ link_form.url.label }} {{ link_form.url }} {{ link_form.submit() }}<br>
-            {% for error in link_form.name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            {% for error in link_form.url.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        <div class="form-row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    {{ link_form.name }}
+                    {% for error in link_form.name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    {{ link_form.url }}
+                    {% for error in link_form.url.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    {{ link_form.submit() }}
+                </div>
+            </div>
+        </div>
     </form>
+
     <div class="row">
         {% for link in detailed_workspace.links %}
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body">{{ link.name }}</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="{{ link.url }}" target="_blank">Go to page</a>
+                    {% if link.url|length > 35 %}
+                    <a class="small text-white stretched-link" href="{{ link.url }}" target="_blank">{{ link.url[:31] }}...</a>
+                    {% else %}
+                    <a class="small text-white stretched-link" href="{{ link.url }}" target="_blank">{{ link.url }}</a>
+                    {% endif %}
                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                 </div>
             </div>
@@ -34,4 +62,23 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // Show form on button clicked
+        $('#new_link_show_btn').click(function(){
+            $('#new_link_form').show()
+            $('#new_link_show_btn').hide()
+            $('#new_link_hide_btn').show()
+        });
+        // Hide form on button clicked
+        $('#new_link_hide_btn').click(function(){
+            $('#new_link_form').hide()
+            $('#new_link_hide_btn').hide()
+            $('#new_link_show_btn').show()
+        });
+    });
+</script>
 {% endblock %}
