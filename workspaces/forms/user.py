@@ -4,8 +4,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from workspaces.models.user import User
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()], render_kw={'placeholder': 'Enter username'})
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={'placeholder': 'Enter password'})
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
