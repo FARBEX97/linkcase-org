@@ -31,11 +31,18 @@
             {% endfor %}
         </div>
     </form>
+    {% if workspaces %}
+    <h2>Time to work!</h2>
+    <p>Click on one of your workspaces and start working with all your handy resources.</p>
+    {% else %}
+    <h2>Create your first workspace</h2>
+    <p>Create your first workspace and start collecting your favorite urls in it!</p>
+    {% endif %}
     <div class="row">
         {% for workspace in workspaces %}
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body"><a class="text-white stretched-link" href="#" id="open_tabs_{{ workspace.name }}">{{ workspace.name }}</a></div>
+                <div class="card-body"><a class="text-white stretched-link" id="open_tabs_{{ workspace.name }}">{{ workspace.name }}</a></div>
             </div>
         </div>
         {% endfor %}
