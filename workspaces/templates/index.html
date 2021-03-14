@@ -46,8 +46,6 @@
 {% block scripts %}
 <script>
     $(document).ready(function() {
-        var workspaces_list = {{ workspaces_list|safe }};
-        // var workspace_urls = 
         // Show form on button clicked
         $('#new_workspace_show_btn').click(function(){
             $('#new_workspace_form').show()
@@ -60,14 +58,15 @@
             $('#new_workspace_hide_btn').hide()
             $('#new_workspace_show_btn').show()
         });
-        for (var workspace in workspaces_list ){
-            $('#open_tabs_'($(workspace.name))).click(function(e) {
-                e.preventDefault();
-                for (var link in workspace.links){
-                    window.open(link);
-                };
-            });
-        };
+        // Open all links of the clicked workspace button
+        {% for workspace in workspaces_list %}
+        $('#open_tabs_{{workspace.name}}').click(function() {
+            // e.preventDefault();
+            {% for link in workspace.links %}
+            window.open('{{link.url}}');
+            {% endfor %}
+        });
+        {% endfor %}
     });
 </script>
 {% endblock %}

@@ -7,6 +7,7 @@ from .forms.user import LoginForm, RegistrationForm
 from .forms.link import NewLinkForm
 from .forms.workspace import NewWorkspaceForm, DeleteWorkspaceForm
 
+import json
 
 @app.route('/', methods=['GET', 'POST'])
 @login_required
@@ -17,7 +18,7 @@ def index():
     del_ws_form = DeleteWorkspaceForm()
     workspaces_list = []
     for ws in workspaces:
-        workspace_dict = {'name': ws.name, 'links': ws.links}
+        workspace_dict = {'name': ws.name, 'links': [link for link in ws.links]}
         workspaces_list.append(workspace_dict)
     workspace_names = [workspace.name for workspace in workspaces]
 
