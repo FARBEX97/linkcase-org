@@ -1,4 +1,4 @@
-{% extends 'index.html' %}
+{% extends 'logged_base.html' %}
 
 {% block detail %}
 <div class="container-fluid">
@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-2 my-1">
             <a class="btn btn-success" href="#new_link_form" id="new_link_show_btn">Add Link</a>
-            <a class="btn btn-warning" href="#new_link_form" id="new_link_hide_btn" style="display: none;">Hide form</a>
+            <a class="btn btn-warning" id="new_link_hide_btn" style="display: none;">Hide form</a>
         </div>
 
     </div>
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-2">
                 <div class="form-group">
-                    {{ link_form.submit() }}
+                    {{ link_form.submit(class="btn btn-outline-secondary") }}
                 </div>
             </div>
         </div>

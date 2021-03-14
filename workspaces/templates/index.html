@@ -1,60 +1,73 @@
-{% extends "base.html" %}
-{% block content %}
-<div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
-                <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="{{ url_for('index') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Dashboard
-                    </a>
-                    <div class="sb-sidenav-menu-heading">Workspaces</div>
-                    <form action="" class="mx-3 text-center" method="post" novalidate>
-                        {{ ws_form.hidden_tag() }}
-                        <div class="input-group mb-3">
-                            {{ ws_form.ws_name(class="form-control") }}
-                            <div class="input-group-append">
-                                {{ ws_form.submit(class="btn btn-outline-secondary") }}
-                            </div>
-                            {% for error in ws_form.ws_name.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
-                            {% endfor %}
-                        </div>
-                    </form>
-                    {% for workspace in workspaces %}
-                    <a class="nav-link" href="{{ url_for('workspace_detail', workspace_name=workspace.name) }}">
-                        <div class="sb-nav-link-icon"></div>
-                        {{ workspace.name }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                {{ current_user.username }}
-            </div>
-        </nav>
+{% extends 'logged_base.html' %}
+
+{% block detail %}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Dashboard</h1>
+    <div class="row">
+        <div class="col-sm-2 my-1">
+            <a class="btn btn-success" href="#new_workspace_form" id="new_workspace_show_btn">New Workspace</a>
+            <a class="btn btn-warning" id="new_workspace_hide_btn" style="display: none;">Hide form</a>
+        </div>
     </div>
-    <div id="layoutSidenav_content">
-        <main>
-            {% block detail %}
-            {% endblock %}
-        </main>
-        <footer class="py-4 bg-light mt-auto">
-            <div class="container-fluid">
-                <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Your Website 2020</div>
-                    <div>
-                        <a href="#">Privacy Policy</a>
-                        &middot;
-                        <a href="#">Terms &amp; Conditions</a>
-                    </div>
+    <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+    <form action="" class="mx-3" method="post" novalidate id="new_workspace_form" style="display: none;">
+        {{ ws_form.hidden_tag() }}
+        <div class="form-row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    {{ ws_form.ws_name(class="form-control") }}
                 </div>
             </div>
-        </footer>
+            <div class="col-md-2">
+                <div class="form-group">
+                {{ ws_form.submit(class="btn btn-outline-secondary", value="Create") }}
+                </div>
+            </div>
+            {% for error in ws_form.ws_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </form>
+    <div class="row">
+        {% for workspace in workspaces %}
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body"><a class="text-white stretched-link" href="#" id="open_tabs_{{ workspace.name }}">{{ workspace.name }}</a></div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        var workspaces_list = {{ workspaces_list|safe }};
+        // var workspace_urls = 
+        // Show form on button clicked
+        $('#new_workspace_show_btn').click(function(){
+            $('#new_workspace_form').show()
+            $('#new_workspace_show_btn').hide()
+            $('#new_workspace_hide_btn').show()
+        });
+        // Hide form on button clicked
+        $('#new_workspace_hide_btn').click(function(){
+            $('#new_workspace_form').hide()
+            $('#new_workspace_hide_btn').hide()
+            $('#new_workspace_show_btn').show()
+        });
+        for (var workspace in workspaces_list ){
+            $('#open_tabs_'($(workspace.name))).click(function(e) {
+                e.preventDefault();
+                for (var link in workspace.links){
+                    window.open(link);
+                };
+            });
+        };
+    });
+</script>
 {% endblock %}

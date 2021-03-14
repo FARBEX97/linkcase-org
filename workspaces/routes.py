@@ -15,7 +15,12 @@ def index():
     links_urls = [workspace.links for workspace in workspaces]
     ws_form = NewWorkspaceForm()
     del_ws_form = DeleteWorkspaceForm()
+    workspaces_list = []
+    for ws in workspaces:
+        workspace_dict = {'name': ws.name, 'links': ws.links}
+        workspaces_list.append(workspace_dict)
     workspace_names = [workspace.name for workspace in workspaces]
+
     if request.method == 'POST':
         if ws_form.ws_name.data and ws_form.validate():
             workspace.create_workspace(name=ws_form.ws_name.data, user=current_user)
@@ -36,7 +41,7 @@ def index():
             flash('Link deleted successfully!')
             return redirect(url_for('index'))
 
-    return render_template('index.html', title='Index', workspaces=workspaces, ws_form=ws_form, del_ws_form=del_ws_form)
+    return render_template('index.html', title='Index', workspaces=workspaces, ws_form=ws_form, del_ws_form=del_ws_form, workspaces_list=workspaces_list)
 
 
 @app.route('/login', methods=['GET', 'POST'])
