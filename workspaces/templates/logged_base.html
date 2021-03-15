@@ -12,21 +12,21 @@
                     </a>
                     <div class="sb-sidenav-menu-heading">Workspaces</div>
                     <form action="" class="mx-3 text-center" method="post" novalidate>
-                        {{ ws_form.hidden_tag() }}
+                        {{ linkcase_form.hidden_tag() }}
                         <div class="input-group mb-3">
-                            {{ ws_form.ws_name(class="form-control") }}
+                            {{ linkcase_form.linkcase_name(class="form-control") }}
                             <div class="input-group-append">
-                                {{ ws_form.submit(class="btn btn-outline-secondary") }}
+                                {{ linkcase_form.submit(class="btn btn-outline-secondary") }}
                             </div>
-                            {% for error in ws_form.ws_name.errors %}
+                            {% for error in linkcase_form.linkcase_name.errors %}
                             <span style="color: red;">[{{ error }}]</span>
                             {% endfor %}
                         </div>
                     </form>
-                    {% for workspace in workspaces %}
-                    <a class="nav-link" href="{{ url_for('workspace_detail', workspace_name=workspace.name) }}">
+                    {% for linkcase in linkcases %}
+                    <a class="nav-link" href="{{ url_for('linkcase_detail', linkcase_name=linkcase.name) }}">
                         <div class="sb-nav-link-icon"></div>
-                        {{ workspace.name }}
+                        {{ linkcase.name }}
                     </a>
                     {% endfor %}
                 </div>

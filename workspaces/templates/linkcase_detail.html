@@ -2,10 +2,10 @@
 
 {% block detail %}
 <div class="container-fluid">
-    <h1 class="mt-4">Workspace: {{ detailed_workspace.name }}</h1>
+    <h1 class="mt-4">Linkcase: {{ detailed_linkcase.name }}</h1>
     <div class="row">
         <div class="col-sm-2 my-1">
-            <form method ="post" action="/"><button type="submit" name="delete_ws" value="{{detailed_workspace.name}}" class="btn btn-danger">Delete Workspace</button></form>
+            <form method ="post" action="/"><button type="submit" name="delete_linkcase" value="{{detailed_linkcase.name}}" class="btn btn-danger">Delete Linkcase</button></form>
         </div>
         <div class="col-sm-2 my-1">
             <a class="btn btn-success" href="#new_link_form" id="new_link_show_btn">Add Link</a>
@@ -14,11 +14,11 @@
 
     </div>
     <ol class="breadcrumb my-4">
-        <li class="breadcrumb-item active"><a href="{{ url_for('index') }}">Dashboard</a>/{{ detailed_workspace.name }}</li>
+        <li class="breadcrumb-item active"><a href="{{ url_for('index') }}">Dashboard</a>/{{ detailed_linkcase.name }}</li>
     </ol>
     <form action="" method="post" novalidate id="new_link_form" style="display: none;">
         {{ link_form.hidden_tag() }}
-        <h3>New link:</h3>
+        <h3>New Link:</h3>
         <div class="form-row">
             <div class="col-md-2">
                 <div class="form-group">
@@ -43,20 +43,20 @@
             </div>
         </div>
     </form>
-    {% if detailed_workspace.links[:]|length > 0 %}
-    <h2>Manage links</h2>
+    {% if detailed_linkcase.links[:]|length > 0 %}
+    <h2>Manage Links</h2>
     <p>Click on any of them to navigate to its url, or open it all with just a button in the <a href="{{ url_for('index') }}">Dashboard</a>.</p>
     {% else %}
-    <h2>This workspace looks so empty</h2>
+    <h2>This Linkcase looks so empty</h2>
     <p>Start collecting your favorite links in it with the "Add Link" button and open it all with just a button in the <a href="{{ url_for('index') }}">Dashboard</a>.</p>
     {% endif %}
     <div class="row">
-        {% for link in detailed_workspace.links %}
+        {% for link in detailed_linkcase.links %}
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body">{{ link.name }}</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
-                    <form method="post" action=""><button type="submit" name="delete_link" value="{{link.name}}::{{detailed_workspace.name}}" class="btn btn-danger">Delete</button></form>
+                    <form method="post" action=""><button type="submit" name="delete_link" value="{{link.name}}::{{detailed_linkcase.name}}" class="btn btn-danger">Delete</button></form>
                     {% if link.url|length > 35 %}
                     <a class="small text-white" href="{{ link.url }}" target="_blank">{{ link.url[:31] }}...</a>
                     {% else %}

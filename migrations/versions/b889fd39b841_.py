@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 3571eab4f58d
+Revision ID: b889fd39b841
 Revises: 
-Create Date: 2021-03-07 20:44:23.723093
+Create Date: 2021-03-15 23:10:54.383647
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3571eab4f58d'
+revision = 'b889fd39b841'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,20 +27,20 @@ def upgrade():
     )
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
-    op.create_table('workspace',
+    op.create_table('linkcase',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_workspace_name'), 'workspace', ['name'], unique=False)
+    op.create_index(op.f('ix_linkcase_name'), 'linkcase', ['name'], unique=False)
     op.create_table('link',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=True),
     sa.Column('url', sa.String(length=64), nullable=True),
-    sa.Column('workspace_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['workspace_id'], ['workspace.id'], ),
+    sa.Column('linkcase_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['linkcase_id'], ['linkcase.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_link_name'), 'link', ['name'], unique=False)
@@ -53,8 +53,8 @@ def downgrade():
     op.drop_index(op.f('ix_link_url'), table_name='link')
     op.drop_index(op.f('ix_link_name'), table_name='link')
     op.drop_table('link')
-    op.drop_index(op.f('ix_workspace_name'), table_name='workspace')
-    op.drop_table('workspace')
+    op.drop_index(op.f('ix_linkcase_name'), table_name='linkcase')
+    op.drop_table('linkcase')
     op.drop_index(op.f('ix_user_username'), table_name='user')
     op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_table('user')

@@ -2,47 +2,46 @@ from . import app, db
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
-from .models import user, workspace, link
+from .models import user, linkcase, link
 from .forms.user import LoginForm, RegistrationForm
 from .forms.link import NewLinkForm
-from .forms.workspace import NewWorkspaceForm, DeleteWorkspaceForm
+from .forms.linkcase import NewLinkcaseForm, DeleteLinkcaseForm
 
-import json
 
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    workspaces = workspace.get_all_workspaces(current_user)
-    links_urls = [workspace.links for workspace in workspaces]
-    ws_form = NewWorkspaceForm()
-    del_ws_form = DeleteWorkspaceForm()
-    workspaces_list = []
-    for ws in workspaces:
-        workspace_dict = {'name': ws.name, 'links': [link for link in ws.links]}
-        workspaces_list.append(workspace_dict)
-    workspace_names = [workspace.name for workspace in workspaces]
+    linkcases = linkcase.get_all_linkcases(current_user)
+    links_urls = [lc.links for lc in linkcases]
+    linkcase_form = NewLinkcaseForm()
+    del_linkcase_form = DeleteLinkcaseForm()
+    linkcases_list = []
+    for lc in linkcases:
+        linkcase_dict = {'name': lc.name, 'links': [link for link in lc.links]}
+        linkcases_list.append(linkcase_dict)
+    linkcase_names = [lc.name for lc in linkcases]
 
     if request.method == 'POST':
-        if ws_form.ws_name.data and ws_form.validate():
-            workspace.create_workspace(name=ws_form.ws_name.data, user=current_user)
-            flash('Workspace created successfully!')
+        if linkcase_form.linkcase_name.data and linkcase_form.validate():
+            linkcase.create_linkcase(name=linkcase_form.linkcase_name.data, user=current_user)
+            flash('Linkcase created successfully!')
             return redirect(url_for('index'))
 
-        elif request.form.get("delete_ws"):
-            workspace.delete_workspace(name=request.form['delete_ws'],user=current_user)
-            flash('Workspace deleted successfully!')
+        elif request.form.get("delete_linkcase"):
+            linkcase.delete_linkcase(name=request.form['delete_linkcase'],user=current_user)
+            flash('Linkcase deleted successfully!')
             return redirect(url_for('index'))
 
         elif request.form.get("delete_link"):
-            def get_linkname_and_workspacename_from_form(form_value):
+            def get_linkname_and_linkcasename_from_form(form_value):
                 form_values = form_value.split('::')
                 return form_values[0], form_values[1]
-            link_name, workspace_name = get_linkname_and_workspacename_from_form(request.form['delete_link'])
-            link.delete_link(link_name=link_name, parent_workspace_name=workspace_name, user=current_user)
+            link_name, linkcase_name = get_linkname_and_linkcasename_from_form(request.form['delete_link'])
+            link.delete_link(link_name=link_name, parent_linkcase_name=linkcase_name, user=current_user)
             flash('Link deleted successfully!')
             return redirect(url_for('index'))
 
-    return render_template('index.html', title='Index', workspaces=workspaces, ws_form=ws_form, del_ws_form=del_ws_form, workspaces_list=workspaces_list)
+    return render_template('index.html', title='Dashboard', linkcases=linkcases, linkcase_form=linkcase_form, del_linkcase_form=del_linkcase_form, linkcases_list=linkcases_list)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -84,39 +83,39 @@ def register():
     return render_template('auth/register.html', title='Register', form=form)
 
 
-@app.route('/workspace/<workspace_name>/detail', methods=['GET', 'POST'])
-def workspace_detail(workspace_name):
-    workspaces = workspace.get_all_workspaces(current_user)
-    links_urls = [workspace.links for workspace in workspaces]
-    ws_form = NewWorkspaceForm()
+@app.route('/linkcase/<linkcase_name>/detail', methods=['GET', 'POST'])
+def linkcase_detail(linkcase_name):
+    linkcases = linkcase.get_all_linkcases(current_user)
+    links_urls = [lc.links for lc in linkcases]
+    linkcase_form = NewLinkcaseForm()
     link_form = NewLinkForm()
-    del_ws_form = DeleteWorkspaceForm()
-    workspace_names = [workspace.name for workspace in workspaces]
+    del_linkcase_form = DeleteLinkcaseForm()
+    linkcase_names = [linkcase.name for linkcase in linkcases]
 
-    detailed_workspace = [workspace for workspace in workspaces if workspace.name == workspace_name][0]
+    detailed_linkcase = [lc for lc in linkcases if lc.name == linkcase_name][0]
     if request.method == 'POST':
-        if ws_form.ws_name.data and ws_form.validate():
-            workspace.create_workspace(name=ws_form.ws_name.data, user=current_user)
-            flash('Workspace created successfully!')
+        if linkcase_form.linkcase_name.data and linkcase_form.validate():
+            linkcase.create_linkcase(name=linkcase_form.linkcase_name.data, user=current_user)
+            flash('Linkcase created successfully!')
             return redirect(url_for('index'))
 
         elif link_form.validate():
-            link.create_link(workspace_name=detailed_workspace.name, user=current_user, link_url=link_form.url.data, link_name=link_form.name.data)
+            link.create_link(linkcase_name=detailed_linkcase.name, user=current_user, link_url=link_form.url.data, link_name=link_form.name.data)
             flash('Link added successfully!')
-            return redirect(url_for('workspace_detail', workspace_name=workspace_name))
+            return redirect(url_for('linkcase_detail', linkcase_name=linkcase_name))
 
-        elif request.form.get("delete_ws"):
-            workspace.delete_workspace(name=request.form['delete_ws'],user=current_user)
-            flash('Workspace deleted successfully!')
+        elif request.form.get("delete_linkcase"):
+            linkcase.delete_linkcase(name=request.form['delete_linkcase'],user=current_user)
+            flash('Linkcase deleted successfully!')
             return redirect(url_for('index'))
 
         elif request.form.get("delete_link"):
-            def get_linkname_and_workspacename_from_form(form_value):
+            def get_linkname_and_linkcasename_from_form(form_value):
                 form_values = form_value.split('::')
                 return form_values[0], form_values[1]
-            link_name, workspace_name = get_linkname_and_workspacename_from_form(request.form['delete_link'])
-            link.delete_link(link_name=link_name, parent_workspace_name=workspace_name, user=current_user)
+            link_name, linkcase_name = get_linkname_and_linkcasename_from_form(request.form['delete_link'])
+            link.delete_link(link_name=link_name, parent_linkcase_name=linkcase_name, user=current_user)
             flash('Link deleted successfully!')
-            return redirect(url_for('workspace_detail', workspace_name=workspace_name))
+            return redirect(url_for('linkcase_detail', linkcase_name=linkcase_name))
 
-    return render_template('ws_detail.html', workspaces=workspaces, ws_form=ws_form, link_form=link_form, del_ws_form=del_ws_form, detailed_workspace=detailed_workspace)
+    return render_template('linkcase_detail.html', linkcases=linkcases, linkcase_form=linkcase_form, link_form=link_form, del_linkcase_form=del_linkcase_form, detailed_linkcase=detailed_linkcase)

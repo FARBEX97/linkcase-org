@@ -7,16 +7,16 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         {% if title %}
-        <title>{{ title }} - Workspaces</title>
+        <title>{{ title }} - Linkcase.org</title>
         {% else %}
-        <title>Welcome to Workspaces</title>
+        <title>Welcome to Linkcase.org</title>
         {% endif %}
         <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Workspaces</a>
+            <a class="navbar-brand" href="https://linkcase.org">Linkcase.org</a>
             {% if current_user.is_anonymous == False %}
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             {% endif %}

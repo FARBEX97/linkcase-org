@@ -6,37 +6,37 @@
     <h1 class="mt-4">Dashboard</h1>
     <div class="row">
         <div class="col-sm-2 my-1">
-            <a class="btn btn-success" href="#new_workspace_form" id="new_workspace_show_btn">New Workspace</a>
-            <a class="btn btn-warning" id="new_workspace_hide_btn" style="display: none;">Hide form</a>
+            <a class="btn btn-success" href="#new_linkcase_form" id="new_linkcase_show_btn">New Linkcase</a>
+            <a class="btn btn-warning" id="new_linkcase_hide_btn" style="display: none;">Hide form</a>
         </div>
     </div>
     <ol class="breadcrumb my-4">
         <li class="breadcrumb-item active">Dashboard</li>
     </ol>
-    <form action="" class="mx-3" method="post" novalidate id="new_workspace_form" style="display: none;">
-        {{ ws_form.hidden_tag() }}
+    <form action="" class="mx-3" method="post" novalidate id="new_linkcase_form" style="display: none;">
+        {{ linkcase_form.hidden_tag() }}
         <div class="form-row">
             <div class="col-md-2">
                 <div class="form-group">
-                    {{ ws_form.ws_name(class="form-control") }}
+                    {{ linkcase_form.linkcase_name(class="form-control") }}
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
-                {{ ws_form.submit(class="btn btn-outline-secondary", value="Create") }}
+                {{ linkcase_form.submit(class="btn btn-outline-secondary", value="Create") }}
                 </div>
             </div>
-            {% for error in ws_form.ws_name.errors %}
+            {% for error in linkcase_form.linkcase_name.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </div>
     </form>
     {% if workspaces %}
     <h2>Time to work!</h2>
-    <p>Click on one of your workspaces and start working with all your handy resources.</p>
+    <p>Click on one of your Linkcases and start working with all your handy resources.</p>
     {% else %}
-    <h2>Create your first workspace</h2>
-    <p>Create your first workspace and start collecting your favorite urls in it!</p>
+    <h2>Create your first Linkcase</h2>
+    <p>Create your first Linkcase and start collecting your favorite urls in it!</p>
     {% endif %}
     <div class="row">
         {% for workspace in workspaces %}
@@ -54,16 +54,16 @@
 <script>
     $(document).ready(function() {
         // Show form on button clicked
-        $('#new_workspace_show_btn').click(function(){
-            $('#new_workspace_form').show()
-            $('#new_workspace_show_btn').hide()
-            $('#new_workspace_hide_btn').show()
+        $('#new_linkcase_show_btn').click(function(){
+            $('#new_linkcase_form').show()
+            $('#new_linkcase_show_btn').hide()
+            $('#new_linkcase_hide_btn').show()
         });
         // Hide form on button clicked
-        $('#new_workspace_hide_btn').click(function(){
-            $('#new_workspace_form').hide()
-            $('#new_workspace_hide_btn').hide()
-            $('#new_workspace_show_btn').show()
+        $('#new_linkcase_hide_btn').click(function(){
+            $('#new_linkcase_form').hide()
+            $('#new_linkcase_hide_btn').hide()
+            $('#new_linkcase_show_btn').show()
         });
         // Open all links of the clicked workspace button
         {% for workspace in workspaces_list %}
