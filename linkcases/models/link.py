@@ -1,5 +1,5 @@
-from workspaces import db
-from workspaces.models.linkcase import Linkcase, get_linkcase
+from linkcases import db
+from linkcases.models.linkcase import Linkcase, get_linkcase
 
 
 class Link(db.Model):

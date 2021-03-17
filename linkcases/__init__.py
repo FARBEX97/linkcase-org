@@ -14,4 +14,4 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
-from workspaces import routes, models
+from linkcases import routes, models

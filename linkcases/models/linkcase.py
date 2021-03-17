@@ -1,4 +1,4 @@
-from workspaces import db
+from linkcases import db
 
 
 class Linkcase(db.Model):
