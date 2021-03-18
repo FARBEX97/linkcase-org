@@ -6,6 +6,11 @@ from .models import user, linkcase, link
 from .forms.user import LoginForm, RegistrationForm
 from .forms.link import NewLinkForm
 from .forms.linkcase import NewLinkcaseForm, DeleteLinkcaseForm
+from datetime import datetime
+
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}
 
 
 @app.route('/', methods=['GET', 'POST'])
