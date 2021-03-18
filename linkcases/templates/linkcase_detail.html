@@ -20,7 +20,7 @@
         {{ link_form.hidden_tag() }}
         <h3>New Link:</h3>
         <div class="form-row">
-            <div class="col-md-2">
+            <div class="col-md-2 mx-2">
                 <div class="form-group">
                     {{ link_form.name }}
                     {% for error in link_form.name.errors %}
@@ -28,7 +28,7 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 mx-2">
                 <div class="form-group">
                     {{ link_form.url }}
                     {% for error in link_form.url.errors %}
@@ -36,7 +36,7 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 mx-2">
                 <div class="form-group">
                     {{ link_form.submit(class="btn btn-outline-secondary") }}
                 </div>
