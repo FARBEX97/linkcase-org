@@ -31,7 +31,7 @@
             {% endfor %}
         </div>
     </form>
-    {% if workspaces %}
+    {% if linkcases %}
     <h2>Time to work!</h2>
     <p>Click on one of your Linkcases and start working with all your handy resources.</p>
     {% else %}
@@ -39,10 +39,10 @@
     <p>Create your first Linkcase and start collecting your favorite urls in it!</p>
     {% endif %}
     <div class="row">
-        {% for workspace in workspaces %}
+        {% for linkcase in linkcases %}
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body"><a class="text-white stretched-link" id="open_tabs_{{ workspace.name }}">{{ workspace.name }}</a></div>
+                <div class="card-body"><a class="text-white stretched-link" id="open_tabs_{{ linkcase.name }}">{{ linkcase.name }}</a></div>
             </div>
         </div>
         {% endfor %}
@@ -66,10 +66,10 @@
             $('#new_linkcase_show_btn').show()
         });
         // Open all links of the clicked workspace button
-        {% for workspace in workspaces_list %}
-        $('#open_tabs_{{workspace.name}}').click(function() {
+        {% for linkcase in linkcases_list %}
+        $('#open_tabs_{{linkcase.name}}').click(function() {
             // e.preventDefault();
-            {% for link in workspace.links %}
+            {% for link in linkcase.links %}
             window.open('{{link.url}}');
             {% endfor %}
         });
