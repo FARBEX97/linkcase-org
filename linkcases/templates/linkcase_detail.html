@@ -53,18 +53,12 @@
     <div class="row">
         {% for link in detailed_linkcase.links %}
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">{{ link.name }}</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <form method="post" action=""><button type="submit" name="delete_link" value="{{link.name}}::{{detailed_linkcase.name}}" class="btn btn-danger">Delete</button></form>
-                    {% if link.url|length > 35 %}
-                    <a class="small text-white" href="{{ link.url }}" target="_blank">{{ link.url[:31] }}...</a>
-                    {% else %}
-                    <a class="small text-white" href="{{ link.url }}" target="_blank">{{ link.url }}</a>
-                    {% endif %}
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            <form method="post" action="">
+                <div class="btn-group" role="group">
+                    <a href="{{ link.url }}" target="_blank" class="btn btn-primary">{{ link.name }}</a>
+                    <button type="submit" name="delete_link" value="{{link.name}}::{{detailed_linkcase.name}}" class="btn btn-outline-danger">Delete</button>
                 </div>
-            </div>
+            </form>
         </div>
         {% endfor %}
     </div>

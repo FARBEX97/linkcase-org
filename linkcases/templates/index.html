@@ -39,11 +39,9 @@
     <p>Create your first Linkcase and start collecting your favorite urls in it!</p>
     {% endif %}
     <div class="row">
-        {% for linkcase in linkcases %}
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body"><a class="text-white stretched-link" id="open_tabs_{{ linkcase.name }}">{{ linkcase.name }}</a></div>
-            </div>
+        {% for linkcase in linkcases_list %}
+        <div class="col-xl-3 col-md-6 text-center">
+            <a class="btn btn-primary my-3" style="font-size: 1.5em;" id="open_tabs_{{ linkcase.name }}">{{ linkcase.name|replace('_', ' ') }}</a>
         </div>
         {% endfor %}
     </div>
