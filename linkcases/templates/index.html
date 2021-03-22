@@ -31,10 +31,7 @@
             {% endfor %}
         </div>
     </form>
-    {% if linkcases %}
-    <h2>Time to work!</h2>
-    <p>Click on one of your Linkcases and start working with all your handy resources.</p>
-    {% else %}
+    {% if not linkcases %}
     <h2>Create your first Linkcase</h2>
     <p>Create your first Linkcase and start collecting your favorite urls in it!</p>
     {% endif %}
