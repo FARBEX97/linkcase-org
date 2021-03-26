@@ -2,22 +2,14 @@
 
 {% block detail %}
 <div class="container-fluid">
-    <h1 class="my-4">Linkcase: {{ detailed_linkcase.name }}</h1>
-    <div class="row">
-        <div class="col-sm-2 my-1">
-            <form method ="post" action="/"><button type="submit" name="delete_linkcase" value="{{detailed_linkcase.name}}" class="btn btn-danger">Delete Linkcase</button></form>
-        </div>
-        <div class="col-sm-2 my-1">
-            <a class="btn btn-success" href="#new_link_form" id="new_link_show_btn">Add Link</a>
-            <a class="btn btn-warning" id="new_link_hide_btn" style="display: none;">Hide form</a>
-        </div>
-
+    <div class="my-4">
+        <h1>Linkcase: {{ detailed_linkcase.name }}</h1>
+        <form method ="post" action="/"><button type="submit" name="delete_linkcase" value="{{detailed_linkcase.name}}" class="btn btn-danger btn-sm">Delete Linkcase</button></form>
     </div>
-    <form action="" method="post" novalidate id="new_link_form" style="display: none;">
+    <form action="" method="post" novalidate id="new_link_form" class="mx-3" style="max-width: 750px;">
         {{ link_form.hidden_tag() }}
-        <h3>New Link:</h3>
         <div class="form-row">
-            <div class="col-md-2 mx-2">
+            <div class="col-sm">
                 <div class="form-group">
                     {{ link_form.name }}
                     {% for error in link_form.name.errors %}
@@ -25,7 +17,7 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="col-md-2 mx-2">
+            <div class="col-sm">
                 <div class="form-group">
                     {{ link_form.url }}
                     {% for error in link_form.url.errors %}
@@ -33,50 +25,42 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="col-md-2 mx-2">
+            <div class="col-sm">
                 <div class="form-group">
-                    {{ link_form.submit(class="btn btn-outline-secondary") }}
+                    {{ link_form.submit(class="btn btn-outline-secondary", value="Create") }}
                 </div>
             </div>
         </div>
     </form>
+    
     {% if detailed_linkcase.links[:]|length > 0 %}
-    <h2 class="py-3">Manage Links</h2>
-    <p>Click on any of them to navigate to its url, or open it all with just a button in the <a href="{{ url_for('index') }}">Dashboard</a>.</p>
+    <!-- <h2 class="py-3">Manage Links</h2>
+    <p>Click on any of them to navigate to its url, or open it all with just a button in the <a href="{{ url_for('index') }}">Dashboard</a>.</p> -->
+    <table class="table table-hover my-3" style="max-width: 500px;">
+        <thead>
+            <tr>
+              <th scope="col">Link</th>
+              <th scope="col"></th>
+            </tr>
+        </thead>
+        {% for link in detailed_linkcase.links %}
+        <tbody>
+            <tr>
+                <td scope="row"><a href="{{ link.url }}">{{ link.name }}</a></td>
+                <td class="text-center">
+                    <form method ="post" action="/" class="text-center">
+                        <button type="submit" name="delete_link" value="{{link.name}}::{{detailed_linkcase.name}}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        <a href="{{ link.url }}" target="_blank" class="mx-3"><i class="fas fa-external-link-alt"></i></a>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
     {% else %}
     <h2 class="py-3">This Linkcase looks so empty</h2>
     <p>Start collecting your favorite links in it with the "Add Link" button and open it all with just a button in the <a href="{{ url_for('index') }}">Dashboard</a>.</p>
     {% endif %}
-    <div class="row">
-        {% for link in detailed_linkcase.links %}
-        <div class="col-xl-3 col-md-6">
-            <form method="post" action="">
-                <div class="btn-group" role="group">
-                    <a href="{{ link.url }}" target="_blank" class="btn btn-primary">{{ link.name }}</a>
-                    <button type="submit" name="delete_link" value="{{link.name}}::{{detailed_linkcase.name}}" class="btn btn-outline-danger">Delete</button>
-                </div>
-            </form>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{% endblock %}
 
-{% block scripts %}
-<script>
-    $(document).ready(function() {
-        // Show form on button clicked
-        $('#new_link_show_btn').click(function(){
-            $('#new_link_form').show()
-            $('#new_link_show_btn').hide()
-            $('#new_link_hide_btn').show()
-        });
-        // Hide form on button clicked
-        $('#new_link_hide_btn').click(function(){
-            $('#new_link_form').hide()
-            $('#new_link_hide_btn').hide()
-            $('#new_link_show_btn').show()
-        });
-    });
-</script>
+</div>
 {% endblock %}
