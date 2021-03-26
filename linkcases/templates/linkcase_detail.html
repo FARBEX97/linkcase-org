@@ -2,7 +2,7 @@
 
 {% block detail %}
 <div class="container-fluid">
-    <h1 class="mt-4">Linkcase: {{ detailed_linkcase.name }}</h1>
+    <h1 class="my-4">Linkcase: {{ detailed_linkcase.name }}</h1>
     <div class="row">
         <div class="col-sm-2 my-1">
             <form method ="post" action="/"><button type="submit" name="delete_linkcase" value="{{detailed_linkcase.name}}" class="btn btn-danger">Delete Linkcase</button></form>
@@ -13,9 +13,6 @@
         </div>
 
     </div>
-    <ol class="breadcrumb my-4">
-        <li class="breadcrumb-item active"><a href="{{ url_for('index') }}">Dashboard</a>/{{ detailed_linkcase.name }}</li>
-    </ol>
     <form action="" method="post" novalidate id="new_link_form" style="display: none;">
         {{ link_form.hidden_tag() }}
         <h3>New Link:</h3>
@@ -44,10 +41,10 @@
         </div>
     </form>
     {% if detailed_linkcase.links[:]|length > 0 %}
-    <h2>Manage Links</h2>
+    <h2 class="py-3">Manage Links</h2>
     <p>Click on any of them to navigate to its url, or open it all with just a button in the <a href="{{ url_for('index') }}">Dashboard</a>.</p>
     {% else %}
-    <h2>This Linkcase looks so empty</h2>
+    <h2 class="py-3">This Linkcase looks so empty</h2>
     <p>Start collecting your favorite links in it with the "Add Link" button and open it all with just a button in the <a href="{{ url_for('index') }}">Dashboard</a>.</p>
     {% endif %}
     <div class="row">

@@ -3,17 +3,20 @@
 {% block detail %}
 
 <div class="container-fluid">
-    <h1 class="mt-4">Dashboard</h1>
-    <div class="row">
+    {% if linkcases %}
+    <h1 class="my-4">Your linkcases</h1>
+    {% else %}
+    <h1 class="my-4">Create your first Linkcase</h1>
+    <p>Create your first Linkcase and start collecting your favorite urls in it!</p>
+    {% endif %}
+    <!-- <div class="row">
         <div class="col-sm-2 my-1">
             <a class="btn btn-success" href="#new_linkcase_form" id="new_linkcase_show_btn">New Linkcase</a>
             <a class="btn btn-warning" id="new_linkcase_hide_btn" style="display: none;">Hide form</a>
         </div>
-    </div>
-    <ol class="breadcrumb my-4">
-        <li class="breadcrumb-item active">Dashboard</li>
-    </ol>
-    <form action="" class="mx-3" method="post" novalidate id="new_linkcase_form" style="display: none;">
+    </div> -->
+    <form action="" class="mx-3" method="post">
+    <!-- <form action="" class="mx-3" method="post" novalidate id="new_linkcase_form" style="display: none;"> -->
         {{ linkcase_form.hidden_tag() }}
         <div class="form-row">
             <div class="col-md-2">
@@ -31,35 +34,40 @@
             {% endfor %}
         </div>
     </form>
-    {% if not linkcases %}
-    <h2>Create your first Linkcase</h2>
-    <p>Create your first Linkcase and start collecting your favorite urls in it!</p>
-    {% endif %}
-    <div class="row">
+    <table class="table table-hover my-3" style="max-width: 500px;">
+        <thead>
+            <tr>
+              <th scope="col">Linkcase</th>
+              <th scope="col">Open all</th>
+            </tr>
+        </thead>
+        {% for linkcase in linkcases_list %}
+        <tbody>
+            <tr>
+                <!-- <td><a href="{{ linkcase.url }}" id="open_tabs_{{ linkcase.name }}"></a></td> -->
+                <td scope="row"><a href="{{ url_for('linkcase_detail', linkcase_name=linkcase.name) }}">{{ linkcase.name|replace('_', ' ') }}</a></td>
+                {% if linkcase.links %}
+                    <td><a href="{{ linkcase.url }}" id="open_tabs_{{ linkcase.name }}"><i class="fas fa-external-link-alt"></i></a></td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <!-- <div class="row">
         {% for linkcase in linkcases_list %}
         <div class="col-xl-3 col-md-6 text-center">
             <a class="btn btn-primary my-3" style="font-size: 1.5em;" id="open_tabs_{{ linkcase.name }}">{{ linkcase.name|replace('_', ' ') }}</a>
         </div>
         {% endfor %}
-    </div>
+    </div> -->
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
     $(document).ready(function() {
-        // Show form on button clicked
-        $('#new_linkcase_show_btn').click(function(){
-            $('#new_linkcase_form').show()
-            $('#new_linkcase_show_btn').hide()
-            $('#new_linkcase_hide_btn').show()
-        });
-        // Hide form on button clicked
-        $('#new_linkcase_hide_btn').click(function(){
-            $('#new_linkcase_form').hide()
-            $('#new_linkcase_hide_btn').hide()
-            $('#new_linkcase_show_btn').show()
-        });
         // Open all links of the clicked workspace button
         {% for linkcase in linkcases_list %}
         $('#open_tabs_{{linkcase.name}}').click(function() {
