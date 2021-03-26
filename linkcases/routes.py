@@ -82,7 +82,7 @@ def linkcase_detail(linkcase_name):
             flash('Link deleted successfully!')
             return redirect(url_for('linkcase_detail', linkcase_name=linkcase_name))
 
-    return render_template('linkcase_detail.html', linkcase_form=linkcase_form, link_form=link_form, del_linkcase_form=del_linkcase_form, detailed_linkcase=detailed_linkcase)
+    return render_template('linkcase_detail.html', title="Detail", linkcase_form=linkcase_form, link_form=link_form, del_linkcase_form=del_linkcase_form, detailed_linkcase=detailed_linkcase)
 
 
 @app.route('/login', methods=['GET', 'POST'])
