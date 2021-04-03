@@ -26,7 +26,6 @@ def get_linkcase(linkcase_name, user):
 def check_if_linkcase_exists(linkcase_name, user):
     linkcase = get_linkcase(linkcase_name, user)
     if linkcase != None:
-        print(linkcase)
         return True
     else:
         return False
@@ -38,6 +37,9 @@ def create_linkcase(name=None, user=None):
             linkcase = Linkcase(name=name, user_id=user.id)
             db.session.add(linkcase)
             db.session.commit()
+            return True
+        else:
+            return False
     except:
         pass
 

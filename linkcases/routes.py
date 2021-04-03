@@ -28,8 +28,11 @@ def index():
 
     if request.method == 'POST':
         if linkcase_form.linkcase_name.data and linkcase_form.validate():
-            linkcase.create_linkcase(name=linkcase_form.linkcase_name.data, user=current_user)
-            flash('Linkcase created successfully!')
+            linkcase_created = linkcase.create_linkcase(name=linkcase_form.linkcase_name.data, user=current_user)
+            if linkcase_created == True:
+                flash('Linkcase created successfully!')
+            else:
+                flash('Linkcase already exists.')
             return redirect(url_for('index'))
 
         elif request.form.get("delete_linkcase"):
