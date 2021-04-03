@@ -31,8 +31,27 @@ def check_if_linkcase_exists(linkcase_name, user):
         return False
 
 
+def check_valid_characters_in_linkcase_name(linkcase_name):
+    valid_chars = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz-,. '
+    print(linkcase_name)
+    for char in linkcase_name:
+        if char in valid_chars:
+            continue
+        else:
+            return False
+    return True
+
+
+def normalize_linkcase_name(linkcase_name):
+    return linkcase_name.replace(' ', '_')
+
+
 def create_linkcase(name=None, user=None):
     try:
+        name_is_valid = check_valid_characters_in_linkcase_name(name)
+        if name_is_valid == False:
+            return False
+        name = normalize_linkcase_name(name)
         if check_if_linkcase_exists(name, user) == False:
             linkcase = Linkcase(name=name, user_id=user.id)
             db.session.add(linkcase)

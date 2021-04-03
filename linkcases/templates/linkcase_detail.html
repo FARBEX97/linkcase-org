@@ -3,7 +3,7 @@
 {% block detail %}
 <div class="container-fluid">
     <div class="my-4">
-        <h1>Linkcase: {{ detailed_linkcase.name }}</h1>
+        <h1>Linkcase: {{ detailed_linkcase.name|replace('_', ' ') }}</h1>
         <form method ="post" action="/"><button type="submit" name="delete_linkcase" value="{{detailed_linkcase.name}}" class="btn btn-danger btn-sm">Delete Linkcase</button></form>
     </div>
     <form action="" method="post" novalidate id="new_link_form" class="mx-3" style="max-width: 750px;">

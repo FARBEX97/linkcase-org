@@ -32,7 +32,7 @@ def index():
             if linkcase_created == True:
                 flash('Linkcase created successfully!')
             else:
-                flash('Linkcase already exists.')
+                flash('Can\'t create Linkcase. Check that there isn\'t a Linkcase with the same name and that you are not using special characters.')
             return redirect(url_for('index'))
 
         elif request.form.get("delete_linkcase"):
@@ -54,11 +54,11 @@ def index():
 
 @app.route('/linkcase/<linkcase_name>/detail', methods=['GET', 'POST'])
 def linkcase_detail(linkcase_name):
+    # linkcase_name.replace(' ','_')
     linkcases = linkcase.get_all_linkcases(current_user)
     linkcase_form = NewLinkcaseForm()
     link_form = NewLinkForm()
     del_linkcase_form = DeleteLinkcaseForm()
-
     detailed_linkcase = [lc for lc in linkcases if lc.name == linkcase_name][0]
     if request.method == 'POST':
         if linkcase_form.linkcase_name.data and linkcase_form.validate():

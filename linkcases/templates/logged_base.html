@@ -26,7 +26,7 @@
                     {% for linkcase in linkcases %}
                     <a class="nav-link" href="{{ url_for('linkcase_detail', linkcase_name=linkcase.name) }}">
                         <div class="sb-nav-link-icon"></div>
-                        {{ linkcase.name }}
+                        {{ linkcase.name|replace('_', ' ') }}
                     </a>
                     {% endfor %}
                 </div>
