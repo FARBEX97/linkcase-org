@@ -23,11 +23,21 @@ def get_linkcase(linkcase_name, user):
     return Linkcase.query.filter_by(name=linkcase_name, user_id=user.id).first()
 
 
+def check_if_linkcase_exists(linkcase_name, user):
+    linkcase = get_linkcase(linkcase_name, user)
+    if linkcase != None:
+        print(linkcase)
+        return True
+    else:
+        return False
+
+
 def create_linkcase(name=None, user=None):
     try:
-        linkcase = Linkcase(name=name, user_id=user.id)
-        db.session.add(linkcase)
-        db.session.commit()
+        if check_if_linkcase_exists(name, user) == False:
+            linkcase = Linkcase(name=name, user_id=user.id)
+            db.session.add(linkcase)
+            db.session.commit()
     except:
         pass
 
